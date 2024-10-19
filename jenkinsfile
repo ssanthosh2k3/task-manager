@@ -12,7 +12,7 @@ pipeline {
                 git branch: 'main', url: 'https://github.com/ssanthosh2k3/task-manager.git'
             }
         }
-        
+
         stage('Build Java Application') {
             steps {
                 script {
@@ -59,7 +59,9 @@ pipeline {
                     // Remove the Docker images from the Jenkins server
                     sh """
                     echo "Removing local Docker images..."
-                    docker rmi ${IMAGE_NAME}:${env.BUILD_ID} ${IMAGE_NAME}:latest || true
+                    docker rmi ${IMAGE_NAME}:${env.BUILD_ID} || true
+                    docker rmi ${IMAGE_NAME}:latest || true
+                    docker rmi \$(docker images -f "dangling=true" -q) || true
                     """
                 }
             }
