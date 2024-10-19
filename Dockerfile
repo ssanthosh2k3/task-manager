@@ -1,10 +1,5 @@
-# Use OpenJDK for building the application
-FROM openjdk:11-jdk-slim AS build
-
-# Install Maven
-RUN apt-get update && \
-    apt-get install -y maven && \
-    rm -rf /var/lib/apt/lists/*
+# Use a different Maven image
+FROM maven:3.8.4-openjdk-11 AS build
 
 # Set the working directory
 WORKDIR /app
