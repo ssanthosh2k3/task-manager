@@ -1,30 +1,19 @@
-# Stage 1: Build the application
-FROM maven:3.8.6-jdk-17 AS build
+# Use a valid Maven image
+FROM maven:3.8.6-openjdk-17 AS build
 
 # Set the working directory
-WORKDIR /usr/src/app
+WORKDIR /app
 
-# Copy the pom.xml and source code
-COPY pom.xml ./
+# Copy pom.xml and source code
+COPY pom.xml .
 COPY src ./src
 
-# Package the application
-RUN mvn clean package -DskipTests
+# Build the application
+RUN mvn clean package
 
-# Stage 2: Create the runtime image
-FROM amazoncorretto:17.0.8-alpine3.18
+# Use a minimal base image for the runtime
+FROM openjdk:17-jdk-slim
+COPY --from=build /app/target/todo-app-1.0-SNAPSHOT.jar /app.jar
 
-# Set the environment variable for the application home
-ENV APP_HOME /usr/src/app
-
-# Expose the application port
-EXPOSE 8080
-
-# Copy the jar from the build stage
-COPY --from=build /usr/src/app/target/*.jar $APP_HOME/app.jar
-
-# Set the working directory
-WORKDIR $APP_HOME
-
-# Command to run the application
-CMD ["java", "-jar", "app.jar"]
+# Run the application
+ENTRYPOINT ["java", "-jar", "/app.jar"]
