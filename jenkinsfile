@@ -19,7 +19,7 @@ pipeline {
                 script {
                     withCredentials([string(credentialsId: 'sonar-tok', variable: 'SONAR_TOKEN')]) {
                         // Run SonarQube scanner inside Docker container
-                        sh """
+                        sh '''
                         docker run --rm \
                         -v $(pwd):/usr/src \
                         -w /usr/src \
@@ -29,7 +29,7 @@ pipeline {
                         -Dsonar.sources=. \
                         -Dsonar.host.url=${SONAR_URL} \
                         -Dsonar.login=${SONAR_TOKEN}
-                        """
+                        '''
                     }
                 }
             }
@@ -49,7 +49,7 @@ pipeline {
                 script {
                     // Build the Docker image using shell commands
                     sh """
-                    echo "Building Docker image..."
+                    echo 'Building Docker image...'
                     docker build -t ${IMAGE_NAME}:${env.BUILD_ID} .
                     """
                 }
@@ -76,10 +76,10 @@ pipeline {
                     // Use stored Docker Hub credentials to log in and push the image
                     withCredentials([string(credentialsId: 'Docker_hub', variable: 'DOCKER_HUB_TOKEN')]) {
                         sh """
-                        echo "Logging into Docker Hub..."
-                        echo "${DOCKER_HUB_TOKEN}" | docker login -u santhoshadmin --password-stdin
+                        echo 'Logging into Docker Hub...'
+                        echo '${DOCKER_HUB_TOKEN}' | docker login -u santhoshadmin --password-stdin
                         
-                        echo "Tagging and pushing the Docker image..."
+                        echo 'Tagging and pushing the Docker image...'
                         docker tag ${IMAGE_NAME}:${env.BUILD_ID} ${IMAGE_NAME}:latest
                         docker push ${IMAGE_NAME}:${env.BUILD_ID}
                         docker push ${IMAGE_NAME}:latest
@@ -94,7 +94,7 @@ pipeline {
                 script {
                     // Remove the Docker images from the Jenkins server
                     sh """
-                    echo "Removing local Docker images..."
+                    echo 'Removing local Docker images...'
                     docker rmi ${IMAGE_NAME}:${env.BUILD_ID} || true
                     docker rmi ${IMAGE_NAME}:latest || true
                     docker rmi \$(docker images -f "dangling=true" -q) || true
