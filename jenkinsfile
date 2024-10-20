@@ -2,7 +2,7 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = 'santhoshadmin/java-task' // Docker image name
+        IMAGE_NAME = 'santhoshadmin/java-task' // Docker image name for the Java application
         SONAR_URL = 'http://164.52.204.161:9000' // SonarQube server URL
     }
 
@@ -18,8 +18,12 @@ pipeline {
             steps {
                 script {
                     withCredentials([string(credentialsId: 'sonar-tok', variable: 'SONAR_TOKEN')]) {
-                        // Run SonarQube scan
+                        // Run SonarQube scanner inside Docker container
                         sh """
+                        docker run --rm \
+                        -v $(pwd):/usr/src \
+                        -w /usr/src \
+                        sonarsource/sonar-scanner-cli \
                         sonar-scanner \
                         -Dsonar.projectKey=task-manager \
                         -Dsonar.sources=. \
@@ -55,10 +59,12 @@ pipeline {
         stage('Trivy Image Scan') {
             steps {
                 script {
-                    // Perform Trivy scan on the Docker image
+                    // Scan the Docker image for vulnerabilities using Trivy
                     sh """
-                    echo "Running Trivy scan on Docker image..."
-                    trivy image --exit-code 1 --severity HIGH ${IMAGE_NAME}:${env.BUILD_ID}
+                    docker run --rm \
+                    -v /var/run/docker.sock:/var/run/docker.sock \
+                    aquasec/trivy \
+                    image --severity HIGH,CRITICAL ${IMAGE_NAME}:${env.BUILD_ID}
                     """
                 }
             }
