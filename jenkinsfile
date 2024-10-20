@@ -39,16 +39,21 @@ pipeline {
                 script {
                     // Scan the Docker image for vulnerabilities using Trivy
                     sh """
+                    echo 'Scanning Docker image for vulnerabilities...'
                     docker run --rm \
                     -v /var/run/docker.sock:/var/run/docker.sock \
                     -v \$(pwd):/workspace \
                     aquasec/trivy \
-                    image --severity HIGH,CRITICAL --output trivy_report.json ${IMAGE_NAME}:${env.BUILD_ID}
+                    image --severity HIGH,CRITICAL --format table --ignore-unfixed ${IMAGE_NAME}:${env.BUILD_ID} > trivy_report.txt
                     """
 
                     // Display a summary of vulnerabilities in the console
                     echo 'Displaying summary of Trivy scan results:'
-                    sh 'cat trivy_report.json | jq -r \'.[] | "\\(.VulnerabilityID) - Severity: \\(.Severity)"\''
+                    if [ -s trivy_report.txt ]; then
+                        cat trivy_report.txt
+                    else
+                        echo 'No critical or high vulnerabilities found.'
+                    fi
                 }
             }
         }
