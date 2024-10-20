@@ -4,7 +4,6 @@ pipeline {
     environment {
         IMAGE_NAME = 'santhoshadmin/java-task' // Docker image name for the Java application
         SONAR_TOKEN = credentials('sonar-tok') // SonarQube token
-        KUBE_TOKEN = credentials('k811') // Kubernetes service account token
     }
 
     stages {
@@ -76,18 +75,6 @@ pipeline {
                         docker push ${IMAGE_NAME}:latest
                         """
                     }
-                }
-            }
-        }
-
-        stage('Deploy to Kubernetes') {
-            steps {
-                script {
-                    // Deploy the new image to the Kubernetes cluster
-                    sh """
-                    echo 'Deploying the Docker image to Kubernetes...'
-                    kubectl set image deployment/task-manager task-manager=${IMAGE_NAME}:latest --namespace=taskmanager --token=${KUBE_TOKEN}
-                    """
                 }
             }
         }
