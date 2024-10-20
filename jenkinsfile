@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         IMAGE_NAME = 'santhoshadmin/java-task' // Docker image name for the Java application
+        SONAR_TOKEN = credentials('sonar-tok') // SonarQube token
     }
 
     stages {
@@ -18,6 +19,22 @@ pipeline {
                 script {
                     // Run Maven to build the Java application
                     sh 'mvn clean package'
+                }
+            }
+        }
+
+        stage('SonarQube Code Analysis') {
+            steps {
+                script {
+                    // Run the SonarQube scanner for code analysis
+                    withSonarQubeEnv('sonarqube') { // Ensure 'sonarqube' matches your SonarQube instance name in Jenkins
+                        sh """
+                        mvn sonar:sonar \
+                        -Dsonar.projectKey=task-manager \
+                        -Dsonar.host.url=http://164.52.204.161:9000 \
+                        -Dsonar.login=${SONAR_TOKEN}
+                        """
+                    }
                 }
             }
         }
