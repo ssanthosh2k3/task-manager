@@ -2,7 +2,8 @@ pipeline {
     agent any
 
     environment {
-        IMAGE_NAME = 'santhoshadmin/java-task' // Updated image name for the Java application
+        IMAGE_NAME = 'santhoshadmin/java-task' // Docker image name
+        SONAR_URL = 'http://164.52.204.161:9000' // SonarQube server URL
     }
 
     stages {
@@ -10,6 +11,23 @@ pipeline {
             steps {
                 // Checkout the code from the main branch
                 git branch: 'main', url: 'https://github.com/ssanthosh2k3/task-manager.git'
+            }
+        }
+
+        stage('SonarQube Analysis') {
+            steps {
+                script {
+                    withCredentials([string(credentialsId: 'sonar-tok', variable: 'SONAR_TOKEN')]) {
+                        // Run SonarQube scan
+                        sh """
+                        sonar-scanner \
+                        -Dsonar.projectKey=task-manager \
+                        -Dsonar.sources=. \
+                        -Dsonar.host.url=${SONAR_URL} \
+                        -Dsonar.login=${SONAR_TOKEN}
+                        """
+                    }
+                }
             }
         }
 
@@ -29,6 +47,18 @@ pipeline {
                     sh """
                     echo "Building Docker image..."
                     docker build -t ${IMAGE_NAME}:${env.BUILD_ID} .
+                    """
+                }
+            }
+        }
+
+        stage('Trivy Image Scan') {
+            steps {
+                script {
+                    // Perform Trivy scan on the Docker image
+                    sh """
+                    echo "Running Trivy scan on Docker image..."
+                    trivy image --exit-code 1 --severity HIGH ${IMAGE_NAME}:${env.BUILD_ID}
                     """
                 }
             }
