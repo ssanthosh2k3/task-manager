@@ -113,7 +113,9 @@ pipeline {
             cleanWs() // Clean workspace after the job is complete
         }
         failure {
-            // Add any failure handling here (e.g., notifications)
+            // Log an error message when the build fails
+            echo 'The build has failed. Please check the logs for more details.'
+            // Optionally, add email notifications or other actions here
         }
     }
 }
