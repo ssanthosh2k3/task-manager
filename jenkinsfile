@@ -47,13 +47,14 @@ pipeline {
                     image --severity HIGH,CRITICAL --format table --ignore-unfixed ${IMAGE_NAME}:${env.BUILD_ID} > trivy_report.txt
                     """
 
-                    // Display a summary of vulnerabilities in the console
+                    // Check if the report file exists and is not empty
+                    def reportExists = sh(script: 'test -s trivy_report.txt', returnStatus: true)
                     echo 'Displaying summary of Trivy scan results:'
-                    if [ -s trivy_report.txt ]; then
-                        cat trivy_report.txt
-                    else
+                    if (reportExists == 0) {
+                        sh 'cat trivy_report.txt'
+                    } else {
                         echo 'No critical or high vulnerabilities found.'
-                    fi
+                    }
                 }
             }
         }
