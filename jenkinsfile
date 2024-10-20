@@ -3,6 +3,7 @@ pipeline {
 
     environment {
         IMAGE_NAME = 'santhoshadmin/java-task' // Docker image name for the Java application
+        RECIPIENT_EMAIL = 'santhoshtech43@gmail.com' // Email to send report to
     }
 
     stages {
@@ -41,9 +42,26 @@ pipeline {
                     sh """
                     docker run --rm \
                     -v /var/run/docker.sock:/var/run/docker.sock \
+                    -v \$(pwd):/workspace \
                     aquasec/trivy \
-                    image --severity HIGH,CRITICAL ${IMAGE_NAME}:${env.BUILD_ID}
+                    image --severity HIGH,CRITICAL --output trivy_report.json ${IMAGE_NAME}:${env.BUILD_ID}
                     """
+                }
+            }
+        }
+
+        stage('Send Trivy Report Email') {
+            steps {
+                script {
+                    // Send email with the Trivy report attached
+                    emailext(
+                        to: "${RECIPIENT_EMAIL}",
+                        subject: "Trivy Scan Report for ${IMAGE_NAME}:${env.BUILD_ID}",
+                        body: """
+                        Please find the attached Trivy scan report for the image: ${IMAGE_NAME}:${env.BUILD_ID}.
+                        """,
+                        attachments: "trivy_report.json"
+                    )
                 }
             }
         }
