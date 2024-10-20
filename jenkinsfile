@@ -49,7 +49,7 @@ pipeline {
                     // Display a summary of vulnerabilities in the console
                     echo 'Displaying summary of Trivy scan results:'
                     sh """
-                    cat trivy_report.json | jq '.[] | {Vulnerability: .VulnerabilityID, Severity: .Severity, InstalledVersion: .InstalledVersion, FixedVersion: .FixedVersion}'
+                    cat trivy_report.json | jq -r '.[] | "\(.VulnerabilityID) - Severity: \(.Severity)"'
                     """
                 }
             }
