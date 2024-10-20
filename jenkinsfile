@@ -4,7 +4,7 @@ pipeline {
     environment {
         IMAGE_NAME = 'santhoshadmin/java-task' // Docker image name for the Java application
         SONAR_TOKEN = credentials('sonar-tok') // SonarQube token
-        KUBE_TOKEN = credentials('kube-token') // Kubernetes service account token
+        KUBE_TOKEN = credentials('k811') // Kubernetes service account token
     }
 
     stages {
