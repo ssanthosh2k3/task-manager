@@ -27,7 +27,7 @@ pipeline {
             steps {
                 script {
                     // Run the SonarQube scanner for code analysis
-                    withSonarQubeEnv('sonarqube') { // Ensure 'sonarqube' matches your SonarQube instance name in Jenkins
+                    withSonarQubeEnv('sonar') { // Ensure 'sonarqube' matches your SonarQube instance name in Jenkins
                         sh """
                         mvn sonar:sonar \
                         -Dsonar.projectKey=task-manager \
