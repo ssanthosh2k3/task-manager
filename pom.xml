@@ -11,7 +11,7 @@
       <java.version>11</java.version>
       <spring.boot.version>2.5.4</spring.boot.version>
       <junit.jupiter.version>5.7.0</junit.jupiter.version>
-      <sonar.maven.plugin.version>3.9.1</sonar.maven.plugin.version> <!-- SonarQube Maven plugin version -->
+      <sonar.maven.plugin.version>4.0.0.4121</sonar.maven.plugin.version> <!-- SonarQube Maven plugin version -->
   </properties>
   <dependencies>
     <dependency>
