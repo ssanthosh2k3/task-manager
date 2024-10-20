@@ -18,18 +18,22 @@ pipeline {
             steps {
                 script {
                     withCredentials([string(credentialsId: 'sonar-tok', variable: 'SONAR_TOKEN')]) {
-                        // Run SonarQube scanner inside Docker container
-                        sh '''
-                        docker run --rm \
-                        -v $(pwd):/usr/src \
-                        -w /usr/src \
-                        sonarsource/sonar-scanner-cli \
-                        sonar-scanner \
-                        -Dsonar.projectKey=task-manager \
-                        -Dsonar.sources=. \
-                        -Dsonar.host.url=${SONAR_URL} \
-                        -Dsonar.login=${SONAR_TOKEN}
-                        '''
+                        try {
+                            // Run SonarQube scanner inside Docker container
+                            sh '''
+                            docker run --rm \
+                            -v $(pwd):/usr/src \
+                            -w /usr/src \
+                            sonarsource/sonar-scanner-cli \
+                            sonar-scanner \
+                            -Dsonar.projectKey=task-manager \
+                            -Dsonar.sources=. \
+                            -Dsonar.host.url=${SONAR_URL} \
+                            -Dsonar.login=${SONAR_TOKEN}
+                            '''
+                        } catch (Exception e) {
+                            error "SonarQube analysis failed: ${e.message}"
+                        }
                     }
                 }
             }
@@ -64,7 +68,7 @@ pipeline {
                     docker run --rm \
                     -v /var/run/docker.sock:/var/run/docker.sock \
                     aquasec/trivy \
-                    image --severity HIGH,CRITICAL ${IMAGE_NAME}:${env.BUILD_ID}
+                    image --severity HIGH,CRITICAL ${IMAGE_NAME}:${env.BUILD_ID} --debug
                     """
                 }
             }
@@ -107,6 +111,9 @@ pipeline {
     post {
         always {
             cleanWs() // Clean workspace after the job is complete
+        }
+        failure {
+            // Add any failure handling here (e.g., notifications)
         }
     }
 }
