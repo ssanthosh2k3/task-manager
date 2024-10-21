@@ -1,6 +1,41 @@
 # End-to-End CI/CD Workflow for a Java To-Do Application Using Jenkins and Kubernetes
 
 This project demonstrates a Continuous Integration and Continuous Deployment (CI/CD) pipeline for a Java application using Jenkins, Docker, and Kubernetes. The pipeline includes automated build and deployment processes, ensuring that the latest code changes are always deployed.
+## Project Overview
+
+This project demonstrates the implementation of a Continuous Integration and Continuous Deployment (CI/CD) pipeline for a Java To-Do application using Jenkins, Docker, and Kubernetes. The pipeline automates the build, scan, and deployment processes to ensure that the latest code changes are continuously integrated and delivered.
+
+### CI/CD Pipeline Flow
+
+The CI/CD pipeline consists of two main jobs:
+
+1. **Job 1: Task-manager**
+   - **Developers Do Commit**: Developers push code changes to the GitHub repository.
+   - **Jenkins Job Run**: A Jenkins job (Task-manager) is triggered automatically upon code commit.
+   - **Checkout**: Jenkins checks out the latest code from the repository.
+   - **Build the Image**: The Docker image is built from the codebase.
+   - **Scan the Image**: The built Docker image is scanned for vulnerabilities using Trivy.
+   - **Push the Image to Docker Hub**: If the scan is successful, the image is pushed to Docker Hub.
+
+2. **Job 2: K8 Deployment**
+   - **Pull the Image**: After the push event is complete, Jenkins pulls the latest image from Docker Hub.
+   - **Deploy to K8 Environment**: The image is deployed to the Kubernetes environment.
+
+### Flow Diagram
+
+Below is a flow diagram illustrating the CI/CD process for both jobs:
+
+```mermaid
+graph TD;
+    A[Developers Do Commit] --> B[Jenkins Job Run: Task-manager];
+    B --> C[Checkout];
+    C --> D[Build the Image];
+    D --> E[Scan the Image with Trivy];
+    E --> F[Push the Image to Docker Hub];
+    F --> G[Job 2: K8 Deployment];
+    G --> H[Pull the Image from Docker Hub];
+    H --> I[Deploy to K8 Environment];
+
 
 ## Prerequisites
 
