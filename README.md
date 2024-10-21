@@ -25,24 +25,25 @@ The CI/CD pipeline consists of two main jobs:
 
 Below is a flow diagram illustrating the CI/CD process for both jobs:
 
+
 ```mermaid
 flowchart LR;
-    A[Developers Do Commit] --> B[Jenkins Job Run: Task-manager];
-    B --> C[Checkout];
-    C --> D[Build the Image];
-    D --> E[Scan the Image with Trivy];
-    E --> F[Push the Image to Docker Hub];
-    F --> G[Job 2: K8 Deployment];
-    G --> H[Pull the Image from Docker Hub];
-    H --> I[Deploy to K8 Environment];
+    A[**Developers Do Commit**] --> B[**Jenkins Job Run: Task-manager**];
+    B --> C[**Checkout**];
+    C --> D[**Build the Image**];
+    D --> E[**Scan the Image with Trivy**];
+    E --> F[**Push the Image to Docker Hub**];
+    F --> G[**Job 2: K8 Deployment**];
+    G --> H[**Pull the Image from Docker Hub**];
+    H --> I[**Deploy to K8 Environment**];
 
-    classDef commitStyle fill:#ffcc00,stroke:#333,stroke-width:2px;
-    classDef jobStyle fill:#ff6699,stroke:#333,stroke-width:2px;
-    classDef checkoutStyle fill:#66ccff,stroke:#333,stroke-width:2px;
-    classDef buildStyle fill:#99cc66,stroke:#333,stroke-width:2px;
-    classDef scanStyle fill:#ff9966,stroke:#333,stroke-width:2px;
-    classDef pushStyle fill:#cc99ff,stroke:#333,stroke-width:2px;
-    classDef deployStyle fill:#66ffcc,stroke:#333,stroke-width:2px;
+    classDef commitStyle stroke:#ffcc00,stroke-width:2px,fill:none;
+    classDef jobStyle stroke:#ff6699,stroke-width:2px,fill:none;
+    classDef checkoutStyle stroke:#66ccff,stroke-width:2px,fill:none;
+    classDef buildStyle stroke:#99cc66,stroke-width:2px,fill:none;
+    classDef scanStyle stroke:#ff9966,stroke-width:2px,fill:none;
+    classDef pushStyle stroke:#cc99ff,stroke-width:2px,fill:none;
+    classDef deployStyle stroke:#66ffcc,stroke-width:2px,fill:none;
 
     class A commitStyle;
     class B jobStyle;
