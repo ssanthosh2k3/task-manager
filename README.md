@@ -101,6 +101,7 @@ spec:
         - containerPort: 8080
           protocol: TCP
       restartPolicy: Always
+
 ### Step 8: Configure Webhook in Docker Hub
 
 - Set up a webhook in Docker Hub with the token for the project repository. This allows Docker Hub to notify Jenkins whenever a new image is pushed.
@@ -129,21 +130,3 @@ spec:
     protocol: TCP
   selector:
     app: java-task
-Additional Notes
-In the Jenkins pipeline, add the kubectl rollout restart command to reflect any changes in the deployment.
-Set the deployment file imagePullPolicy to Always to ensure that the latest image is always pulled.
-Use the latest tag for your Docker image to see the newest version of the application.
-Tools Used
-Trivy: For scanning Docker images for vulnerabilities.
-Kubernetes (K8): For managing containerized applications.
-Jenkins: For continuous integration and continuous deployment.
-Docker: For containerizing the Java application.
-Docker Hub: For storing Docker images.
-GitHub: For version control of the project.
-Learning Outcomes
-Through this project, you will learn:
-
-Principles of Continuous Integration and Continuous Deployment (CI/CD).
-How to manage Kubernetes deployments and services.
-Automation using Jenkins.
-Writing Dockerfiles and managing Docker images.
