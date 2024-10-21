@@ -25,6 +25,7 @@ The CI/CD pipeline consists of two main jobs:
 
 Below is a flow diagram illustrating the CI/CD process for both jobs:
 
+```mermaid
 flowchart LR;
     A[Developers Do Commit] --> B[Jenkins Job Run: Task-manager];
     B --> C[Checkout];
@@ -34,7 +35,7 @@ flowchart LR;
     F --> G[Job 2: K8 Deployment];
     G --> H[Pull the Image from Docker Hub];
     H --> I[Deploy to K8 Environment];
-
+```
 ## Prerequisites
 
 Before you begin, ensure you have the following installed and configured:
