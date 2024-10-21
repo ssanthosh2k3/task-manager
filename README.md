@@ -36,7 +36,7 @@ graph TD;
     G --> H[Pull the Image from Docker Hub];
     H --> I[Deploy to K8 Environment];
 
-
+```
 ## Prerequisites
 
 Before you begin, ensure you have the following installed and configured:
