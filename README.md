@@ -18,6 +18,7 @@ The project repository should include the following files and directories:
 . ├── application_code/ # Your Java application code ├── Jenkinsfile # Jenkins pipeline configuration └── Dockerfile # Dockerfile for building the application image
 
 
+
 ## Steps to Set Up the CI/CD Pipeline
 
 ### Step 1: Create GitHub Repository
@@ -102,19 +103,19 @@ spec:
           protocol: TCP
       restartPolicy: Always
 
+
+
 ### Step 8: Configure Webhook in Docker Hub
 
-- Set up a webhook in Docker Hub with the token for the project repository. This allows Docker Hub to notify Jenkins whenever a new image is pushed.
-
-![Webhook Configuration](https://github.com/ssanthosh2k3/task-manager/blob/main/assests/cred.png)
+Set up a webhook in Docker Hub with the token for the project repository. This allows Docker Hub to notify Jenkins whenever a new image is pushed.
 
 ### Step 9: Create Kubernetes Deployment Pipeline
 
-- Develop a Jenkins pipeline that triggers on Jenkins jobs or any push events to deploy the latest image to the Kubernetes cluster. This ensures that your application is always running the most recent version.
+Develop a Jenkins pipeline that triggers on Jenkins jobs or any push events to deploy the latest image to the Kubernetes cluster. This ensures that your application is always running the most recent version.
 
 ### Step 10: Create Load Balancer Service
 
-- Set up a LoadBalancer service to expose the deployment. Save the following configuration in a file named `service.yaml`:
+Set up a LoadBalancer service to expose the deployment. Save the following configuration in a file named `service.yaml`:
 
 ```yaml
 apiVersion: v1
@@ -130,3 +131,26 @@ spec:
     protocol: TCP
   selector:
     app: java-task
+## Additional Notes
+
+- In the Jenkins pipeline, add the `kubectl rollout restart` command to reflect any changes in the deployment.
+- Set the deployment file `imagePullPolicy` to `Always` to ensure that the latest image is always pulled.
+- Use the `latest` tag for your Docker image to see the newest version of the application.
+
+## Tools Used
+
+- **Trivy**: For scanning Docker images for vulnerabilities.
+- **Kubernetes (K8)**: For managing containerized applications.
+- **Jenkins**: For continuous integration and continuous deployment.
+- **Docker**: For containerizing the Java application.
+- **Docker Hub**: For storing Docker images.
+- **GitHub**: For version control of the project.
+
+## Learning Outcomes
+
+Through this project, you will learn:
+
+- Principles of Continuous Integration and Continuous Deployment (CI/CD).
+- How to manage Kubernetes deployments and services.
+- Automation using Jenkins.
+- Writing Dockerfiles and managing Docker images.
