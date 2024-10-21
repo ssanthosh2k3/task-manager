@@ -1,4 +1,4 @@
-# Java To-DO Application CI/CD with Jenkins and Kubernetes
+# End-to-End CI/CD Workflow for a Java To-Do Application Using Jenkins and Kubernetes
 
 This project demonstrates a Continuous Integration and Continuous Deployment (CI/CD) pipeline for a Java application using Jenkins, Docker, and Kubernetes. The pipeline includes automated build and deployment processes, ensuring that the latest code changes are always deployed.
 
