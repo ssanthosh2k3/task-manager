@@ -1,36 +1,28 @@
 apiVersion: apps/v1
-kind: Deployment # Kubernetes resource kind we are creating
+kind: Deployment
 metadata:
-  name: taskmaster-deployment
+  name: java-task
+  namespace: default
 spec:
+  replicas: 1
   selector:
     matchLabels:
-      app: taskmaster
-  replicas: 2 # Number of replicas that will be created for this deployment
+      app: java-task
+  strategy:
+    rollingUpdate:
+      maxSurge: 25%
+      maxUnavailable: 25%
+    type: RollingUpdate
   template:
     metadata:
       labels:
-        app: taskmaster
+        app: java-task
     spec:
       containers:
-        - name: taskmaster
-          image: adijaiswal/prodtaskmaster:latest # Image that will be used to containers in the cluster
-          imagePullPolicy: Always
-          ports:
-            - containerPort: 8080 # The port that the container is running on in the cluster
-
-
----
-
-apiVersion: v1 # Kubernetes API version
-kind: Service # Kubernetes resource kind we are creating
-metadata: # Metadata of the resource kind we are creating
-  name: taskmaster-ssvc
-spec:
-  selector:
-    app: taskmaster
-  ports:
-    - protocol: "TCP"
-      port: 80
-      targetPort: 8080 
-  type: LoadBalancer # type of the service.
+      - name: java-task
+        image: santhoshadmin/java-task:latest
+        imagePullPolicy: Always
+        ports:
+        - containerPort: 8080
+          protocol: TCP
+      restartPolicy: Always
