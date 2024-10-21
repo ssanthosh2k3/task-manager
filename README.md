@@ -13,8 +13,6 @@ Before you begin, ensure you have the following installed and configured:
   - **Maven**: For building the Java application.
 - Access to a Kubernetes (K8) cluster.
 
-## Project Structure
-
 The project repository should include the following files and directories:
 
 . ├── application_code/ # Your Java application code ├── Jenkinsfile # Jenkins pipeline configuration └── Dockerfile # Dockerfile for building the application image
@@ -43,6 +41,8 @@ The project repository should include the following files and directories:
   - Build the Docker image.
   - Push the Docker image to Docker Hub.
 
+![Pipeline Script](https://github.com/ssanthosh2k3/task-manager/blob/main/assests/java-docker-repo.png)
+
 ### Step 4: Install Jenkins Plugins
 
 - Install the following plugins via the Jenkins dashboard:
@@ -60,7 +60,15 @@ The project repository should include the following files and directories:
   - Docker Hub credentials.
   - Kube config file.
 
-### Step 6: Create Kubernetes Deployment
+![Credentials Configuration](https://github.com/ssanthosh2k3/task-manager/blob/main/assests/cred.png)
+
+### Step 6: Create Pipeline from Docker Hub to Kubernetes Cluster
+
+- Create a new Jenkins job (Job name: **Task-manager**) to deploy the application from Docker Hub to your Kubernetes cluster.
+
+![Jenkins Job Configuration](https://github.com/ssanthosh2k3/task-manager/blob/main/assests/jenkinsjobs.png)
+
+### Step 7: Create Deployment File
 
 - Create a deployment YAML file to specify the desired state of your application. Save the following configuration in a file named `deployment.yaml`:
 
@@ -93,7 +101,49 @@ spec:
         - containerPort: 8080
           protocol: TCP
       restartPolicy: Always
+### Step 8: Configure Webhook in Docker Hub
 
+- Set up a webhook in Docker Hub with the token for the project repository. This allows Docker Hub to notify Jenkins whenever a new image is pushed.
 
-Step 7: Configure Webhook in Docker Hub
-Set up a webhook in Docker Hub with the token for the project repository. This allows Docker Hub to notify Jenkins whenever a new image is pushed.
+![Webhook Configuration](https://github.com/ssanthosh2k3/task-manager/blob/main/assests/cred.png)
+
+### Step 9: Create Kubernetes Deployment Pipeline
+
+- Develop a Jenkins pipeline that triggers on Jenkins jobs or any push events to deploy the latest image to the Kubernetes cluster. This ensures that your application is always running the most recent version.
+
+### Step 10: Create Load Balancer Service
+
+- Set up a LoadBalancer service to expose the deployment. Save the following configuration in a file named `service.yaml`:
+
+```yaml
+apiVersion: v1
+kind: Service
+metadata:
+  name: java-task-service
+  namespace: default
+spec:
+  type: LoadBalancer
+  ports:
+  - port: 80
+    targetPort: 8080
+    protocol: TCP
+  selector:
+    app: java-task
+Additional Notes
+In the Jenkins pipeline, add the kubectl rollout restart command to reflect any changes in the deployment.
+Set the deployment file imagePullPolicy to Always to ensure that the latest image is always pulled.
+Use the latest tag for your Docker image to see the newest version of the application.
+Tools Used
+Trivy: For scanning Docker images for vulnerabilities.
+Kubernetes (K8): For managing containerized applications.
+Jenkins: For continuous integration and continuous deployment.
+Docker: For containerizing the Java application.
+Docker Hub: For storing Docker images.
+GitHub: For version control of the project.
+Learning Outcomes
+Through this project, you will learn:
+
+Principles of Continuous Integration and Continuous Deployment (CI/CD).
+How to manage Kubernetes deployments and services.
+Automation using Jenkins.
+Writing Dockerfiles and managing Docker images.
