@@ -35,6 +35,24 @@ flowchart LR;
     F --> G[Job 2: K8 Deployment];
     G --> H[Pull the Image from Docker Hub];
     H --> I[Deploy to K8 Environment];
+
+    classDef commitStyle fill:#ffcc00,stroke:#333,stroke-width:2px;
+    classDef jobStyle fill:#ff6699,stroke:#333,stroke-width:2px;
+    classDef checkoutStyle fill:#66ccff,stroke:#333,stroke-width:2px;
+    classDef buildStyle fill:#99cc66,stroke:#333,stroke-width:2px;
+    classDef scanStyle fill:#ff9966,stroke:#333,stroke-width:2px;
+    classDef pushStyle fill:#cc99ff,stroke:#333,stroke-width:2px;
+    classDef deployStyle fill:#66ffcc,stroke:#333,stroke-width:2px;
+
+    class A commitStyle;
+    class B jobStyle;
+    class C checkoutStyle;
+    class D buildStyle;
+    class E scanStyle;
+    class F pushStyle;
+    class G jobStyle;
+    class H checkoutStyle;
+    class I deployStyle;
 ```
 ## Prerequisites
 
