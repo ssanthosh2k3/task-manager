@@ -204,33 +204,20 @@ spec:
     app: java-task
 ```
 
-# Java To-Do Application
-
-The Java To-Do application is successfully deployed in a Kubernetes cluster, providing high availability and robust performance. Below is an overview of the application interface:
-
-![Application Homepage](https://github.com/ssanthosh2k3/task-manager/blob/main/assets/homepage.png)
-
-## Features
-
-- **User-friendly interface** for managing tasks.
-- **High availability** using Kubernetes for load balancing and scaling.
-- **Real-time updates** with seamless deployment processes.
-
-## Deployment
-
-### Kubernetes Environment
-
-The application is hosted in a Kubernetes environment, ensuring resilience and scalability.
-
-### Jenkins Integration
-
-The CI/CD pipeline is configured with Jenkins, automating the build and deployment process.
 
 ## Additional Notes
 
 - In the Jenkins pipeline, add the `kubectl rollout restart` command to reflect any changes in the deployment.
 - Set the deployment file `imagePullPolicy` to `Always` to ensure that the latest image is always pulled.
 - Use the `latest` tag for your Docker image to see the newest version of the application.
+
+
+
+The Java To-Do application is successfully deployed in a Kubernetes cluster, providing high availability and robust performance. Below is an overview of the application interface:
+
+![Application Homepage](https://github.com/ssanthosh2k3/task-manager/blob/main/assets/homepage.png)
+
+
 
 ## Tools Used
 
