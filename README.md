@@ -4,53 +4,52 @@ This project demonstrates a Continuous Integration and Continuous Deployment (CI
 
 ## Prerequisites
 
-- A Jenkins node with the following installed:
-  - Trivy
-  - kubectl
-  - Docker
-  - Maven
+Before you begin, ensure you have the following installed and configured:
+
+- A Jenkins node with the following tools:
+  - **Trivy**: For container security scanning.
+  - **kubectl**: To interact with your Kubernetes cluster.
+  - **Docker**: To build and push Docker images.
+  - **Maven**: For building the Java application.
 - Access to a Kubernetes (K8) cluster.
 
 ## Project Structure
 
-The project repository should include the following files:
+The project repository should include the following files and directories:
 
-- Application code
-- `Jenkinsfile`
-- `Dockerfile`
+. ├── application_code/ # Your Java application code ├── Jenkinsfile # Jenkins pipeline configuration └── Dockerfile # Dockerfile for building the application image
+
 
 ## Steps to Set Up the CI/CD Pipeline
 
 ### Step 1: Create GitHub Repository
 
-1. Create a GitHub repository.
-2. Commit all project code in the repository under the main branch.
+1. Create a new GitHub repository.
+2. Commit all project code (application code, `Jenkinsfile`, `Dockerfile`) into the repository under the main branch.
 
 ### Step 2: Install Required Tools on Jenkins Server
 
 - Install the following tools on the Jenkins server:
-  - Trivy
-  - kubectl
-  - Docker
+  - **Trivy**
+  - **kubectl**
+  - **Docker**
 
-*Note: If using worker nodes, ensure all dependencies are installed on those nodes as well.*
+*Note: If using worker nodes, ensure that all dependencies are installed on those nodes as well.*
 
 ### Step 3: Write a Pipeline Script
 
-- Create a pipeline script in Jenkins to:
+- Create a Jenkins pipeline script to:
   - Checkout code from GitHub.
   - Build the Docker image.
   - Push the Docker image to Docker Hub.
 
-![Docker Image Example](https://github.com/ssanthosh2k3/task-manager/blob/main/assests/java-docker-repo.png)
-
 ### Step 4: Install Jenkins Plugins
 
 - Install the following plugins via the Jenkins dashboard:
-  - Docker Pipeline
-  - Kubernetes Plugin
-  - Git Plugin
-  - Kubernetes Credentials Plugin
+  - **Docker Pipeline**
+  - **Kubernetes Plugin**
+  - **Git Plugin**
+  - **Kubernetes Credentials Plugin**
 
 - Add Docker Hub credentials as secret text in the Jenkins dashboard.
 - Configure a generic webhook trigger for the Docker Hub webhook.
@@ -61,11 +60,9 @@ The project repository should include the following files:
   - Docker Hub credentials.
   - Kube config file.
 
-![Credentials Setup](https://github.com/ssanthosh2k3/task-manager/blob/main/assests/cred.png)
-
 ### Step 6: Create Kubernetes Deployment
 
-- Create a deployment YAML file to specify the desired state of your application.
+- Create a deployment YAML file to specify the desired state of your application. Save the following configuration in a file named `deployment.yaml`:
 
 ```yaml
 apiVersion: apps/v1
@@ -96,3 +93,7 @@ spec:
         - containerPort: 8080
           protocol: TCP
       restartPolicy: Always
+
+
+Step 7: Configure Webhook in Docker Hub
+Set up a webhook in Docker Hub with the token for the project repository. This allows Docker Hub to notify Jenkins whenever a new image is pushed.
