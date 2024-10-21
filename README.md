@@ -26,6 +26,12 @@ The CI/CD pipeline consists of two main jobs:
 Below is a flow diagram illustrating the CI/CD process for both jobs:
 
 
+# Project Overview
+
+This document provides an overview of the CI/CD pipeline for the Java To-Do application using Jenkins and Kubernetes.
+
+## CI/CD Process Flow
+
 ```mermaid
 flowchart LR;
     A[**Developers Do Commit**] --> B[**Jenkins Job Run: Task-manager**];
@@ -54,6 +60,17 @@ flowchart LR;
     class G jobStyle;
     class H checkoutStyle;
     class I deployStyle;
+
+    style A font-size: 18px;
+    style B font-size: 18px;
+    style C font-size: 18px;
+    style D font-size: 18px;
+    style E font-size: 18px;
+    style F font-size: 18px;
+    style G font-size: 18px;
+    style H font-size: 18px;
+    style I font-size: 18px;
+
 ```
 ## Prerequisites
 
