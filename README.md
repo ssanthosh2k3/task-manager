@@ -215,7 +215,8 @@ spec:
 
 The Java To-Do application is successfully deployed in a Kubernetes cluster, providing high availability and robust performance. Below is an overview of the application interface:
 
-![Application Homepage](https://github.com/ssanthosh2k3/task-manager/blob/main/assets/homepage.png)
+<img src="https://github.com/ssanthosh2k3/task-manager/blob/main/assets/homepage.png" alt="Homepage Image" width="500" height="300">
+
 
 
 
